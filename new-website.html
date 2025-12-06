@@ -1,849 +1,477 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <title>موقع ثنائي اللغة + مترجم فوري</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="موقع ثنائي اللغة مع مترجم فوري عربي-إنجليزي" />
-
-  <style>
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --secondary: #8b5cf6;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #1e293b;
-      --text-light: #64748b;
-      --border: #e2e8f0;
-      --success: #10b981;
-      --error: #ef4444;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    [data-theme="dark"] {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --text: #f1f5f9;
-      --text-light: #94a3b8;
-      --border: #334155;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      transition: background 0.3s ease, color 0.3s ease;
-      line-height: 1.6;
-    }
-
-    .container {
-      background: var(--card-bg);
-      max-width: 1000px;
-      width: 100%;
-      border-radius: 32px;
-      box-shadow: var(--shadow-lg);
-      padding: 40px;
-      transition: all 0.3s ease;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-
-    .logo {
-      font-size: 1.75rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .language-switch {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--bg);
-      padding: 4px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-
-    .lang-btn {
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      background: transparent;
-      color: var(--text-light);
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-
-    .lang-btn:hover {
-      color: var(--text);
-    }
-
-    .lang-btn.active {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: var(--shadow);
-    }
-
-    .theme-toggle {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      transition: all 0.2s ease;
-    }
-
-    .theme-toggle:hover {
-      background: var(--border);
-      transform: scale(1.05);
-    }
-
-    .content {
-      margin-bottom: 32px;
-    }
-
-    .content h1 {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-      font-weight: 800;
-      line-height: 1.2;
-    }
-
-    .content h2 {
-      font-size: 1.25rem;
-      margin-bottom: 20px;
-      color: var(--text-light);
-      font-weight: 500;
-    }
-
-    .content p {
-      margin-bottom: 16px;
-      line-height: 1.8;
-      font-size: 1.05rem;
-      color: var(--text-light);
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-top: 8px;
-      transition: all 0.3s ease;
-      box-shadow: var(--shadow);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .btn-secondary {
-      background: var(--bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background: var(--border);
-    }
-
-    .features {
-      margin-top: 32px;
-      margin-bottom: 32px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-    }
-
-    .feature-card {
-      border-radius: 16px;
-      padding: 20px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      cursor: default;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-      border-color: var(--primary);
-    }
-
-    .translate-box {
-      margin-top: 40px;
-      background: var(--bg);
-      padding: 28px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-
-    .translate-box h2 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-
-    .translate-controls {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-
-    .translate-btn {
-      flex: 1;
-      min-width: 140px;
-      padding: 12px 20px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.95rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .translate-btn.primary {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: #fff;
-    }
-
-    .translate-btn.secondary {
-      background: var(--card-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .translate-btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-    }
-
-    .translate-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .swap-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card-bg);
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      transition: all 0.2s ease;
-    }
-
-    .swap-btn:hover {
-      background: var(--primary);
-      color: #fff;
-      transform: rotate(180deg);
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 150px;
-      padding: 16px;
-      border-radius: 12px;
-      border: 2px solid var(--border);
-      font-size: 1rem;
-      resize: vertical;
-      background: var(--card-bg);
-      color: var(--text);
-      transition: all 0.2s ease;
-      font-family: inherit;
-    }
-
-    textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-    }
-
-    .char-count {
-      text-align: left;
-      font-size: 0.85rem;
-      color: var(--text-light);
-      margin-top: 8px;
-    }
-
-    .output-section {
-      margin-top: 24px;
-    }
-
-    .output-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .output-header h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    .copy-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--card-bg);
-      color: var(--text);
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .copy-btn:hover {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-
-    .copy-btn.copied {
-      background: var(--success);
-      color: #fff;
-      border-color: var(--success);
-    }
-
-    #outputText {
-      min-height: 120px;
-      background: var(--card-bg);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      font-size: 1rem;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      transition: all 0.2s ease;
-    }
-
-    #outputText:empty::before {
-      content: attr(data-placeholder);
-      color: var(--text-light);
-      font-style: italic;
-    }
-
-    .loading {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .footer {
-      font-size: 0.9rem;
-      color: var(--text-light);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .error-message {
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--error);
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 12px;
-      font-size: 0.9rem;
-      display: none;
-    }
-
-    .error-message.show {
-      display: block;
-      animation: shake 0.3s ease;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-10px); }
-      75% { transform: translateX(10px); }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 24px;
-        border-radius: 24px;
-      }
-
-      .content h1 {
-        font-size: 2rem;
-      }
-
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .header-controls {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .translate-controls {
-        flex-direction: column;
-      }
-
-      .translate-btn {
-        width: 100%;
-      }
-
-      .footer {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 12px;
-      }
-
-      .container {
-        padding: 20px;
-      }
-
-      .content h1 {
-        font-size: 1.75rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ميثه ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: floatParticle 20s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .heart-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            filter: drop-shadow(0 0 30px rgba(255, 23, 68, 0.6));
+        }
+
+        .heart {
+            position: relative;
+            width: 200px;
+            height: 180px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            left: 100px;
+            top: 0;
+            width: 100px;
+            height: 160px;
+            background: linear-gradient(135deg, #ff1744, #ff6b9d);
+            border-radius: 100px 100px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+            box-shadow: 0 0 40px rgba(255, 23, 68, 0.8);
+        }
+
+        .heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        .heart-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 23, 68, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 2s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.15);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.08);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 0.8;
+            }
+        }
+
+        .name-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .name {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #fff, #ffd1dc, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            margin: 15px;
+            animation: float 4s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 0.1s);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .name:hover {
+            transform: scale(1.3) rotate(5deg) !important;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+            z-index: 100;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateY(-25px) rotate(-3deg) scale(1.05);
+            }
+            50% {
+                transform: translateY(-15px) rotate(3deg) scale(1.1);
+            }
+            75% {
+                transform: translateY(-30px) rotate(-2deg) scale(1.05);
+            }
+        }
+
+        .message-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            text-align: center;
+            z-index: 20;
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .message-container.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message {
+            font-size: 6rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #fff, #ffd1dc, #ff6b9d, #fff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientText 3s ease infinite, pulse 2s ease-in-out infinite;
+            margin-bottom: 40px;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+            filter: drop-shadow(0 0 30px rgba(255, 23, 68, 0.6));
+        }
+
+        @keyframes gradientText {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .message-heart {
+            font-size: 5rem;
+            animation: heartbeat 1.5s ease-in-out infinite, rotateHeart 4s linear infinite;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px rgba(255, 23, 68, 0.8));
+        }
+
+        @keyframes rotateHeart {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5) rotate(180deg);
+            }
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0;
+            animation: floatUp 4s ease-out infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff1744;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .countdown {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: bold;
+            z-index: 15;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            animation: countdownPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes countdownPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- الهيدر -->
-    <div class="header">
-      <div class="logo" data-i18n="logo">موقعي التجريبي</div>
-
-      <div class="header-controls">
-        <div class="language-switch">
-          <span data-i18n="languageLabel" style="padding: 0 8px; font-size: 0.9rem; color: var(--text-light);">اللغة:</span>
-          <button class="lang-btn active" data-lang="ar">العربية</button>
-          <button class="lang-btn" data-lang="en">English</button>
-        </div>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
-      </div>
+    <div class="particles" id="particles"></div>
+    
+    <div class="heart-container">
+        <div class="heart-glow"></div>
+        <div class="heart"></div>
     </div>
 
-    <!-- المحتوى -->
-    <div class="content">
-      <h1 data-i18n="title">موقع عربي – إنجليزي سهل الاستخدام</h1>
-      <h2 data-i18n="subtitle">بدّل اللغة بضغطة زر</h2>
+    <div class="countdown" id="countdown"></div>
 
-      <p data-i18n="paragraph1">
-        هذا مثال لموقع بسيط ثنائي اللغة. يمكنك تعديل النصوص والأقسام كما تريد.
-      </p>
+    <div class="name-container" id="nameContainer"></div>
 
-      <p data-i18n="paragraph2">
-        التصميم يدعم العربية والإنجليزية بتبديل اتجاه الصفحة تلقائياً. كما يتضمن وضع داكن ووضع فاتح.
-      </p>
-
-      <button class="btn-primary" data-i18n="cta">تواصل معنا الآن</button>
-
-      <div class="features">
-        <div class="feature-card" data-i18n="feature1">✨ واجهة بسيطة وسهلة</div>
-        <div class="feature-card" data-i18n="feature2">🌐 دعم لغتين: عربي / إنجليزي</div>
-        <div class="feature-card" data-i18n="feature3">📱 متوافق مع الجوال</div>
-        <div class="feature-card" data-i18n="feature4">🌓 وضع داكن ووضع فاتح</div>
-      </div>
+    <div class="message-container" id="messageContainer">
+        <div class="message">احبج ميثه</div>
+        <div class="message-heart">❤️</div>
     </div>
 
-    <!-- مترجم فوري -->
-    <div class="translate-box">
-      <h2 data-i18n="translatorTitle">مترجم فوري</h2>
-      
-      <div class="translate-controls">
-        <button class="translate-btn primary" id="translateToEn" data-i18n="translateToEn">
-          <span>ترجمة إلى الإنجليزية</span>
-        </button>
-        <button class="swap-btn" id="swapLanguages" title="تبديل الاتجاه">⇄</button>
-        <button class="translate-btn secondary" id="translateToAr" data-i18n="translateToAr">
-          <span>ترجمة إلى العربية</span>
-        </button>
-      </div>
-
-      <textarea 
-        id="inputText" 
-        data-i18n-placeholder="inputPlaceholder"
-        placeholder="اكتب هنا..."
-      ></textarea>
-      <div class="char-count">
-        <span id="charCount">0</span> <span data-i18n="characters">حرف</span>
-      </div>
-
-      <div class="error-message" id="errorMessage"></div>
-
-      <div class="output-section">
-        <div class="output-header">
-          <h3 data-i18n="outputTitle">الناتج:</h3>
-          <button class="copy-btn" id="copyBtn" data-i18n="copyBtn">
-            <span>📋</span> <span>نسخ</span>
-          </button>
-        </div>
-        <div id="outputText" data-placeholder="ستظهر الترجمة هنا..."></div>
-      </div>
-    </div>
-
-    <!-- الفوتر -->
-    <div class="footer">
-      <span data-i18n="footerText">يمكن تعديل كل شيء بسهولة.</span>
-      <span>&copy; <span id="year"></span> - <span data-i18n="allRights">جميع الحقوق محفوظة</span></span>
-    </div>
-  </div>
-
-  <script>
-    // ========== إعدادات اللغة ==========
-    const translations = {
-      ar: {
-        logo: "موقعي التجريبي",
-        languageLabel: "اللغة:",
-        title: "موقع عربي – إنجليزي سهل الاستخدام",
-        subtitle: "بدّل اللغة بضغطة زر",
-        paragraph1: "هذا مثال لموقع بسيط ثنائي اللغة. يمكنك تعديل النصوص والأقسام كما تريد.",
-        paragraph2: "التصميم يدعم العربية والإنجليزية بتبديل اتجاه الصفحة تلقائياً. كما يتضمن وضع داكن ووضع فاتح.",
-        cta: "تواصل معنا الآن",
-        feature1: "✨ واجهة بسيطة وسهلة",
-        feature2: "🌐 دعم لغتين: عربي / إنجليزي",
-        feature3: "📱 متوافق مع الجوال",
-        feature4: "🌓 وضع داكن ووضع فاتح",
-        translatorTitle: "مترجم فوري",
-        translateToEn: "ترجمة إلى الإنجليزية",
-        translateToAr: "ترجمة إلى العربية",
-        inputPlaceholder: "اكتب هنا...",
-        characters: "حرف",
-        outputTitle: "الناتج:",
-        copyBtn: "نسخ",
-        copied: "تم النسخ!",
-        footerText: "يمكن تعديل كل شيء بسهولة.",
-        allRights: "جميع الحقوق محفوظة",
-        errorNetwork: "خطأ في الاتصال. يرجى المحاولة مرة أخرى.",
-        errorEmpty: "يرجى إدخال نص للترجمة.",
-        loading: "جاري الترجمة..."
-      },
-      en: {
-        logo: "My Demo Website",
-        languageLabel: "Language:",
-        title: "Simple Arabic–English Website",
-        subtitle: "Switch language with one click",
-        paragraph1: "This is an example of a simple bilingual website you can edit anytime.",
-        paragraph2: "The design supports Arabic & English automatically. It also includes dark and light modes.",
-        cta: "Contact us now",
-        feature1: "✨ Simple and clean interface",
-        feature2: "🌐 Two languages: Arabic / English",
-        feature3: "📱 Mobile-friendly",
-        feature4: "🌓 Dark and light mode",
-        translatorTitle: "Instant Translator",
-        translateToEn: "Translate to English",
-        translateToAr: "Translate to Arabic",
-        inputPlaceholder: "Type here...",
-        characters: "characters",
-        outputTitle: "Output:",
-        copyBtn: "Copy",
-        copied: "Copied!",
-        footerText: "Everything can be edited easily.",
-        allRights: "All rights reserved",
-        errorNetwork: "Network error. Please try again.",
-        errorEmpty: "Please enter text to translate.",
-        loading: "Translating..."
-      }
-    };
-
-    // ========== إدارة اللغة ==========
-    const langButtons = document.querySelectorAll(".lang-btn");
-    const htmlTag = document.documentElement;
-    let currentLang = localStorage.getItem("preferredLang") || "ar";
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem("preferredLang", lang);
-      
-      const dict = translations[lang];
-      document.querySelectorAll("[data-i18n]").forEach((el) => {
-        const key = el.getAttribute("data-i18n");
-        if (dict[key]) el.textContent = dict[key];
-      });
-
-      // تحديث placeholder
-      const inputText = document.getElementById("inputText");
-      if (inputText && dict.inputPlaceholder) {
-        inputText.placeholder = dict.inputPlaceholder;
-      }
-
-      htmlTag.setAttribute("lang", lang);
-      htmlTag.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-
-      langButtons.forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.lang === lang);
-      });
-    }
-
-    langButtons.forEach((btn) => {
-      btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
-    });
-
-    // تطبيق اللغة المحفوظة
-    setLanguage(currentLang);
-
-    // ========== إدارة الوضع الداكن ==========
-    const themeToggle = document.getElementById("themeToggle");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-    let currentTheme = localStorage.getItem("theme") || (prefersDark.matches ? "dark" : "light");
-
-    function setTheme(theme) {
-      currentTheme = theme;
-      localStorage.setItem("theme", theme);
-      document.documentElement.setAttribute("data-theme", theme);
-      themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
-    }
-
-    themeToggle.addEventListener("click", () => {
-      setTheme(currentTheme === "dark" ? "light" : "dark");
-    });
-
-    setTheme(currentTheme);
-
-    // ========== المترجم ==========
-    const inputText = document.getElementById("inputText");
-    const outputText = document.getElementById("outputText");
-    const translateToEnBtn = document.getElementById("translateToEn");
-    const translateToArBtn = document.getElementById("translateToAr");
-    const swapBtn = document.getElementById("swapLanguages");
-    const copyBtn = document.getElementById("copyBtn");
-    const charCount = document.getElementById("charCount");
-    const errorMessage = document.getElementById("errorMessage");
-
-    let translationDirection = { from: "ar", to: "en" };
-
-    // عداد الأحرف
-    inputText.addEventListener("input", () => {
-      charCount.textContent = inputText.value.length;
-    });
-
-    // تبديل اتجاه الترجمة
-    swapBtn.addEventListener("click", () => {
-      translationDirection = {
-        from: translationDirection.to,
-        to: translationDirection.from
-      };
-      updateTranslateButtons();
-    });
-
-    function updateTranslateButtons() {
-      const isArToEn = translationDirection.from === "ar" && translationDirection.to === "en";
-      translateToEnBtn.classList.toggle("primary", isArToEn);
-      translateToEnBtn.classList.toggle("secondary", !isArToEn);
-      translateToArBtn.classList.toggle("primary", !isArToEn);
-      translateToArBtn.classList.toggle("secondary", isArToEn);
-    }
-
-    async function translate(text, from, to) {
-      try {
-        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`;
-        const response = await fetch(url);
+    <script>
+        // إنشاء اسم ميثه في جميع أنحاء الشاشة
+        const nameContainer = document.getElementById('nameContainer');
+        const messageContainer = document.getElementById('messageContainer');
+        const particlesContainer = document.getElementById('particles');
+        const countdownEl = document.getElementById('countdown');
         
-        if (!response.ok) {
-          throw new Error("Network error");
+        // إنشاء الجزيئات المتحركة
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
         }
-        
-        const data = await response.json();
-        
-        if (data.responseStatus === 200) {
-          return data.responseData.translatedText;
-        } else {
-          throw new Error("Translation failed");
+
+        function createNames() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const nameSize = 3.5; // rem
+            const namesPerRow = Math.floor(screenWidth / (nameSize * 15));
+            const namesPerCol = Math.floor(screenHeight / (nameSize * 15));
+            
+            for (let i = 0; i < namesPerRow * namesPerCol; i++) {
+                const name = document.createElement('div');
+                name.className = 'name';
+                name.textContent = 'ميثه';
+                name.style.setProperty('--delay', i);
+                name.style.left = Math.random() * 100 + '%';
+                name.style.top = Math.random() * 100 + '%';
+                nameContainer.appendChild(name);
+            }
         }
-      } catch (error) {
-        throw error;
-      }
-    }
 
-    async function performTranslation(from, to) {
-      const txt = inputText.value.trim();
-      
-      if (!txt) {
-        showError(translations[currentLang].errorEmpty);
-        return;
-      }
+        // إنشاء نجوم متلألئة
+        function createSparkles() {
+            for (let i = 0; i < 30; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                sparkle.style.animationDuration = (1.5 + Math.random() * 1) + 's';
+                document.body.appendChild(sparkle);
+            }
+        }
 
-      hideError();
-      outputText.innerHTML = `<div class="loading"></div> ${translations[currentLang].loading}`;
-      
-      translateToEnBtn.disabled = true;
-      translateToArBtn.disabled = true;
+        // إنشاء قلوب متطايرة
+        function createFloatingHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (3 + Math.random() * 2) + 's';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 5000);
+            }, 500);
+        }
 
-      try {
-        const result = await translate(txt, from, to);
-        outputText.textContent = result;
-        translationDirection = { from, to };
-        updateTranslateButtons();
-      } catch (error) {
-        showError(translations[currentLang].errorNetwork);
-        outputText.textContent = "";
-      } finally {
-        translateToEnBtn.disabled = false;
-        translateToArBtn.disabled = false;
-      }
-    }
+        // إنشاء confetti عند ظهور الرسالة
+        function createConfetti() {
+            const colors = ['#ff1744', '#ff6b9d', '#ffd1dc', '#fff', '#ffeb3b'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = (5 + Math.random() * 10) + 'px';
+                confetti.style.height = (5 + Math.random() * 10) + 'px';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
 
-    translateToEnBtn.addEventListener("click", () => {
-      performTranslation("ar", "en");
-    });
+        // عداد تنازلي
+        let countdown = 10;
+        const countdownInterval = setInterval(() => {
+            countdownEl.textContent = countdown > 0 ? countdown : '';
+            if (countdown > 0) {
+                countdown--;
+            } else {
+                clearInterval(countdownInterval);
+                countdownEl.style.display = 'none';
+            }
+        }, 1000);
 
-    translateToArBtn.addEventListener("click", () => {
-      performTranslation("en", "ar");
-    });
-
-    // نسخ النص
-    copyBtn.addEventListener("click", async () => {
-      const text = outputText.textContent.trim();
-      if (!text) return;
-
-      try {
-        await navigator.clipboard.writeText(text);
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = `<span>✓</span> <span>${translations[currentLang].copied}</span>`;
-        copyBtn.classList.add("copied");
-        
+        // عرض الرسالة بعد 10 ثوان
         setTimeout(() => {
-          copyBtn.innerHTML = originalText;
-          copyBtn.classList.remove("copied");
-        }, 2000);
-      } catch (error) {
-        // Fallback for older browsers
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-        
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = `<span>✓</span> <span>${translations[currentLang].copied}</span>`;
-        copyBtn.classList.add("copied");
-        
-        setTimeout(() => {
-          copyBtn.innerHTML = originalText;
-          copyBtn.classList.remove("copied");
-        }, 2000);
-      }
-    });
+            messageContainer.classList.add('show');
+            nameContainer.style.opacity = '0';
+            nameContainer.style.transition = 'opacity 1.5s ease-in';
+            createConfetti();
+        }, 10000);
 
-    function showError(message) {
-      errorMessage.textContent = message;
-      errorMessage.classList.add("show");
-      setTimeout(hideError, 5000);
-    }
+        // تهيئة الصفحة
+        createParticles();
+        createNames();
+        createSparkles();
+        createFloatingHearts();
 
-    function hideError() {
-      errorMessage.classList.remove("show");
-    }
+        // إعادة إنشاء الأسماء عند تغيير حجم النافذة
+        window.addEventListener('resize', () => {
+            nameContainer.innerHTML = '';
+            createNames();
+        });
 
-    // ترجمة عند الضغط على Enter (Ctrl/Cmd + Enter)
-    inputText.addEventListener("keydown", (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        if (translationDirection.from === "ar") {
-          performTranslation("ar", "en");
-        } else {
-          performTranslation("en", "ar");
-        }
-      }
-    });
-
-    // ========== تهيئة السنة ==========
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+        // تأثير عند النقر على الأسماء
+        nameContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('name')) {
+                const heart = document.createElement('div');
+                heart.textContent = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.fontSize = '2rem';
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                heart.style.pointerEvents = 'none';
+                heart.style.animation = 'floatUp 2s ease-out forwards';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 2000);
+            }
+        });
+    </script>
 </body>
 </html>
